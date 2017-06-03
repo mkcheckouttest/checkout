@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using FluentAssertions.Common;
-using Moq;
 using NUnit.Framework;
 
 namespace Checkout.OfficeShoppingList.Domain.Tests
@@ -13,7 +12,7 @@ namespace Checkout.OfficeShoppingList.Domain.Tests
         [Test]
         public void GivenAnEmptyShoppingList_WhenDoNothing_ShoppingListShouldBeEmpty()
         {
-            var sut = new ShoppingList();
+            var sut = CreateSut();
 
             sut.Items.Should().BeEmpty();
         }
@@ -21,7 +20,7 @@ namespace Checkout.OfficeShoppingList.Domain.Tests
         [Test]
         public void GivenEmptyShoppingList_WhenAddAnItem_ShoppingListShouldContainNewItem()
         {
-            var sut = new ShoppingList();
+            var sut = CreateSut();
 
             sut.AddItem("foo");
 
@@ -32,7 +31,7 @@ namespace Checkout.OfficeShoppingList.Domain.Tests
         [TestCase("bar")]
         public void GivenShoppingListWithExistingItem_WhenAddSameItem_ShouldNotBeAllowedToAddItemAgain(string name)
         {
-            var sut = new ShoppingList(new Dictionary<string, Item>() {{name, new Item(name)}});
+            var sut = CreateSut(new Dictionary<string, Item>() { { name, new Item(name) } });
 
             TestDelegate action = () => sut.AddItem(name);
 
@@ -57,7 +56,7 @@ namespace Checkout.OfficeShoppingList.Domain.Tests
         public void GivenShoppingList_WhenUpdatingQuantityOfAnItem_ShoppingListShouldContainItemWithNewQuantity(string name)
         {
             var random = new Random();
-            var sut = new ShoppingList(new Dictionary<string, Item>() { { name, new Item(name, (uint)random.Next(int.MaxValue)) } });
+            var sut = CreateSut(new Dictionary<string, Item>() { { name, new Item(name, (uint)random.Next(int.MaxValue)) } });
 
             var expectedQuantity = random.Next(int.MaxValue);
 
@@ -70,7 +69,7 @@ namespace Checkout.OfficeShoppingList.Domain.Tests
         [TestCase("foobar", "barbar")]
         public void GivenShoppingList_WhenMultipleItemsAdded_ShoppingListShouldContainAllItems(params string[] itemNames)
         {
-            var sut = new ShoppingList();
+            var sut = CreateSut();
 
             foreach (var name in itemNames)
             {
@@ -83,7 +82,7 @@ namespace Checkout.OfficeShoppingList.Domain.Tests
         [Test]
         public void GivenEmptyShoppingList_WhenAttemptToRemoveUnexpectedItem_ShouldNotDoAnything()
         {
-            var sut = new ShoppingList();
+            var sut = CreateSut();
 
             sut.RemoveItem("foo");
 
@@ -94,7 +93,7 @@ namespace Checkout.OfficeShoppingList.Domain.Tests
         [TestCase("bar")]
         public void GivenShoppingList_WhenAttemptToRemoveItem_ShoppingListShouldNotContainItem(string name)
         {
-            var sut = new ShoppingList(new Dictionary<string, Item>() { { name, new Item(name) } });
+            var sut = CreateSut(new Dictionary<string, Item>() { { name, new Item(name) } });
 
             sut.RemoveItem(name);
 
@@ -105,11 +104,25 @@ namespace Checkout.OfficeShoppingList.Domain.Tests
         [TestCase("bar")]
         public void GivenShoppingList_WhenAttemptToUpdateQuantityToZero_ShoppingListShouldNotContainItem(string name)
         {
-            var sut = new ShoppingList(new Dictionary<string, Item>() { { name, new Item(name) } });
+            var sut = CreateSut(new Dictionary<string, Item>() { { name, new Item(name) } });
 
             sut.UpdateItem(name, 0);
 
             sut.Items.Should().NotContain(x => x.Name == name);
+        }
+
+        private static ShoppingList CreateSut(Dictionary<string, Item> items = null, Guid id = default(Guid))
+        {
+            if (items == null)
+            {
+                items = new Dictionary<string, Item>();
+            }
+
+            if (id == default(Guid))
+            {
+                id = Guid.NewGuid();
+            }
+            return new ShoppingList(id, items);
         }
     }
 }

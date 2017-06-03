@@ -7,14 +7,16 @@ namespace Checkout.OfficeShoppingList.Domain
     public class ShoppingList
     {
         private readonly Dictionary<string, Item> itemDictionary;
+        public readonly Guid Id;
         public IReadOnlyList<Item> Items => itemDictionary.Values.ToList() as IReadOnlyList<Item>;
 
-        internal ShoppingList(Dictionary<string, Item> items)
+        internal ShoppingList(Guid id, Dictionary<string, Item> items)
         {
+            Id = id;
             itemDictionary = items;
         }
 
-        public ShoppingList() : this(new Dictionary<string, Item>())
+        public ShoppingList() : this(Guid.NewGuid(), new Dictionary<string, Item>())
         {
         }
 
