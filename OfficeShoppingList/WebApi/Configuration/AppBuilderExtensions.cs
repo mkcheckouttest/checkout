@@ -1,5 +1,6 @@
 ﻿using System.Web.Http;
 using Owin;
+using SimpleInjector;
 
 namespace Checkout.OfficeShoppingList.WebApi.Configuration
 {
@@ -8,7 +9,7 @@ namespace Checkout.OfficeShoppingList.WebApi.Configuration
         internal static Bootstrap Bootstrap(this IAppBuilder appBuilder)
         {
             var httpConfiguration = new HttpConfiguration();
-            return new Bootstrap(appBuilder, httpConfiguration);
+            return new Bootstrap(appBuilder, httpConfiguration, new Container());
         }
     }
 }

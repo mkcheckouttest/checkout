@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using Checkout.OfficeShoppingList.Domain;
 
 namespace Checkout.OfficeShoppingList.Application
 {
-    public class InMemoryShoppingListRepository: IShoppingListCommands, IShoppingListQueries
+    public class InMemoryShoppingListRepository: IShoppingListCommands, IShoppingListRepository
     {
         // starts with a single existing list that we can then use to find.
         public static ConcurrentDictionary<Guid, ShoppingList> Lists =
@@ -30,6 +31,11 @@ namespace Checkout.OfficeShoppingList.Application
         public ShoppingList Get(Guid id)
         {
             return Lists[id];
+        }
+
+        public Item GetItemByName(Guid id, string name)
+        {
+            return Lists[id].Items.FirstOrDefault(x => x.Name == name);
         }
     }
 }

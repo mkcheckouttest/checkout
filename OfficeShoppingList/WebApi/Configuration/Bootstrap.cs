@@ -1,5 +1,6 @@
 ﻿using System.Web.Http;
 using Owin;
+using SimpleInjector;
 
 namespace Checkout.OfficeShoppingList.WebApi.Configuration
 {
@@ -7,11 +8,13 @@ namespace Checkout.OfficeShoppingList.WebApi.Configuration
     {
         public readonly IAppBuilder AppBuilder;
         public readonly HttpConfiguration HttpConfiguration;
+        public readonly Container Container;
 
-        public Bootstrap(IAppBuilder appBuilder, HttpConfiguration httpConfiguration)
+        public Bootstrap(IAppBuilder appBuilder, HttpConfiguration httpConfiguration, Container container)
         {
             AppBuilder = appBuilder;
             HttpConfiguration = httpConfiguration;
+            Container = container;
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Checkout.OfficeShoppingList.WebApi
         public void Configuration(IAppBuilder app)
         {
             app.Bootstrap()
+                .SetupDependencies()
                 .WithoutDefaultContentTypes()
                 .WithJsonContentType()
                 .UseWebApi();

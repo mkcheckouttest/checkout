@@ -8,9 +8,9 @@ namespace Checkout.OfficeShoppingList.Domain
     {
         private readonly Dictionary<string, Item> itemDictionary;
         public readonly Guid Id;
-        public IReadOnlyList<Item> Items => itemDictionary.Values.ToList() as IReadOnlyList<Item>;
+        public HashSet<Item> Items => new HashSet<Item>(itemDictionary.Values.ToList());
 
-        internal ShoppingList(Guid id, Dictionary<string, Item> items)
+        public ShoppingList(Guid id, Dictionary<string, Item> items)
         {
             Id = id;
             itemDictionary = items;
