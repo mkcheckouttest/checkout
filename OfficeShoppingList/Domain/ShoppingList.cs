@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Checkout.OfficeShoppingList.Domain
@@ -10,18 +11,41 @@ namespace Checkout.OfficeShoppingList.Domain
 
         internal ShoppingList(Dictionary<string, Item> items)
         {
-            this.itemDictionary = items;
+            itemDictionary = items;
         }
 
         public ShoppingList() : this(new Dictionary<string, Item>())
         {
         }
 
-        public void AddItem(string name)
+        public void AddItem(string name, uint quantity = 1)
         {
-            itemDictionary[name] = itemDictionary.ContainsKey(name)
-                ? new Item(name, itemDictionary[name].Quanity + 1)
-                : new Item(name);
+            if (itemDictionary.ContainsKey(name))
+            {
+                throw new InvalidOperationException("Cannot add existing item to Shopping List");
+            }
+
+            UpdateItem(name, quantity);
+        }
+
+        public void UpdateItem(string name, uint quantity)
+        {
+            if (quantity == 0)
+            {
+                RemoveItem(name);
+            }
+            else
+            {
+                itemDictionary[name] = new Item(name, quantity);
+            }
+        }
+
+        public void RemoveItem(string name)
+        {
+            if (itemDictionary.ContainsKey(name))
+            {
+                itemDictionary.Remove(name);
+            }   
         }
     }
 }
