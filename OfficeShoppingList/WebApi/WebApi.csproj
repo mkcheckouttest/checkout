@@ -129,6 +129,11 @@
     <Compile Include="Configuration\Bootstrap.IoC.cs" />
     <Compile Include="Configuration\Bootstrap.WebApi.cs" />
     <Compile Include="Controllers\ShoppingListsController.cs" />
+    <Compile Include="Exceptions\CoreExceptionResult.cs" />
+    <Compile Include="Exceptions\GlobalExceptionHandler.cs" />
+    <Compile Include="Exceptions\HttpErrorResponse.cs" />
+    <Compile Include="Exceptions\HttpErrorResponseFactory.cs" />
+    <Compile Include="Exceptions\IHttpErrorResponseFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

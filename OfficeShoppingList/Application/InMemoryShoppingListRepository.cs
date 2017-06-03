@@ -32,10 +32,5 @@ namespace Checkout.OfficeShoppingList.Application
         {
             return Lists[id];
         }
-
-        public Item GetItemByName(Guid id, string name)
-        {
-            return Lists[id].Items.FirstOrDefault(x => x.Name == name);
-        }
     }
 }

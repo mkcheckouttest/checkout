@@ -24,6 +24,7 @@ namespace Checkout.OfficeShoppingList.WebApi.Controllers
         [HttpPost, Route("lists/{id}/items")]
         public IHttpActionResult AddShoppingListItem(Guid id, [FromBody] ItemDto item)
         {
+            service.AddItemToShoppingList(id, item);
             return Created($"lists/{id}/items/{item.Name}", item);
         }
 
