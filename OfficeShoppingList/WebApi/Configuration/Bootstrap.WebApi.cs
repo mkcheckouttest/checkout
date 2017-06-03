@@ -5,6 +5,7 @@ using System.Net;
 using Owin;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
+using Checkout.OfficeShoppingList.WebApi.Attributes;
 using Checkout.OfficeShoppingList.WebApi.Exceptions;
 
 namespace Checkout.OfficeShoppingList.WebApi.Configuration
@@ -17,7 +18,7 @@ namespace Checkout.OfficeShoppingList.WebApi.Configuration
 
             HttpConfiguration.Services.Replace(typeof(IExceptionHandler),
                 GlobalExceptionHandler.Factory.Create(new HttpErrorResponseFactory()));
-            //HttpConfiguration.Filters.Add(...);
+            HttpConfiguration.Filters.Add(new AuthorizeByKeyAttribute());
             HttpConfiguration.EnsureInitialized();
             AppBuilder.UseWebApi(HttpConfiguration);
 

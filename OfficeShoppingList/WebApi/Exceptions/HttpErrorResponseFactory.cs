@@ -18,6 +18,16 @@ namespace Checkout.OfficeShoppingList.WebApi.Exceptions
                 };
             }
 
+            if (exception.GetType() == typeof(NotAuthorizedException))
+            {
+                return new HttpErrorResponse()
+                {
+                    InternalErrorCode = "Not Authorized",
+                    Message = "You are not authorized to access this API",
+                    StatusCode = HttpStatusCode.Forbidden
+                };
+            }
+
             if (exception.GetType() == typeof(InvalidOperationException))
             {
                 return new HttpErrorResponse()
