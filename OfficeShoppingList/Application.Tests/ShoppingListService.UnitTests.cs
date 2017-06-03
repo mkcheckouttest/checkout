@@ -75,7 +75,7 @@ namespace Checkout.OfficeShoppingList.Application.Tests
 
             TestDelegate action = () => sut.GetShoppingListItem(id, "foo");
 
-            Assert.Throws<InvalidOperationException>(action);
+            Assert.Throws<KeyNotFoundException>(action);
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace Checkout.OfficeShoppingList.Application.Tests
 
             TestDelegate action = () => sut.GetShoppingListItem(id, "foo");
 
-            Assert.Throws<InvalidOperationException>(action);
+            Assert.Throws<KeyNotFoundException>(action);
         }
 
         [Test]

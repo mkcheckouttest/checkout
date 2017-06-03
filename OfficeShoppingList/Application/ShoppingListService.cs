@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Checkout.OfficeShoppingList.Application.Dtos;
 using Checkout.OfficeShoppingList.Domain;
@@ -29,7 +30,7 @@ namespace Checkout.OfficeShoppingList.Application
 
             if (item == null)
             {
-                throw new InvalidOperationException($"ShoppingList({id}): Unable to find item, {name}, in shopping list");
+                throw new KeyNotFoundException($"ShoppingList({id}): Unable to find item, {name}, in shopping list");
             }
 
             return item;
@@ -62,7 +63,7 @@ namespace Checkout.OfficeShoppingList.Application
 
             if (list == null)
             {
-                throw new InvalidOperationException($"Unable to find ShoppingList({id})");
+                throw new KeyNotFoundException($"Unable to find ShoppingList({id})");
             }
 
             return list;
