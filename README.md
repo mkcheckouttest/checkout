@@ -2,8 +2,8 @@
 
 ## What is in this repository
 
-`OfficeShoppingList` - This is the completion of the API for adding items to a shopping list for the office.
-`checkout-net-library` - Forked and then modified library for 
+- `OfficeShoppingList` - This is the completion of the API for adding items to a shopping list for the office.
+- `checkout-net-library` - Forked and then modified library for 
 
 ## How long did I spend and what has been implemented?
 
