@@ -43,9 +43,11 @@ namespace Checkout.OfficeShoppingList.WebApi.Controllers
         }
 
         [HttpDelete, Route("lists/{id}/items/{name}")]
-        public void Delete(Guid id, string name)
+        public IHttpActionResult Delete(Guid id, string name)
         {
+            var item = service.GetShoppingListItem(id, name);
             service.RemoveItemFromShoppingList(id, name);
+            return Ok(item);
         }
     }
 }

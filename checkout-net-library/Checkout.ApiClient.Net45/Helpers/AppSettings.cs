@@ -22,6 +22,8 @@ namespace Checkout
         public const string ClientUserAgentName = "Checkout-DotNetLibraryClient/v1.0";
         public const string DefaultContentType = "application/json";
 
+        public static string ShoppingListBaseUri => "http://localhost:65050";
+
         public static string BaseApiUri
         {
             get { return _baseApiUri; }

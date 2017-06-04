@@ -13,7 +13,7 @@ namespace Checkout.OfficeShoppingList.Application
             new ConcurrentDictionary<Guid, ShoppingList>(new List<KeyValuePair<Guid, ShoppingList>>()
             {
                 new KeyValuePair<Guid, ShoppingList>(new Guid("DD366592-C35C-48B3-A80C-87D1D04AF824"),
-                    new ShoppingList())
+                    new ShoppingList(new Guid("DD366592-C35C-48B3-A80C-87D1D04AF824"), new Dictionary<string, Item>()))
             });
 
         public ShoppingList Create()
